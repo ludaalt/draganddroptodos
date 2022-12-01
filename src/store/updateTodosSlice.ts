@@ -8,6 +8,7 @@ export const updateTodosSlice = createSlice({
   name: 'todos',
   initialState: {
     todos: data,
+    isCreatingTodo: false,
   },
   reducers: {
     addTodo: (state, action: PayloadAction<Todo>) => {
@@ -26,9 +27,14 @@ export const updateTodosSlice = createSlice({
         state.todos = [todo, ...state.todos.filter((item) => item.id !== action.payload.id)];
       }
     },
+
+    createTodo: (state, action: PayloadAction<boolean>) => {
+      console.log(action.payload);
+      state.isCreatingTodo = action.payload;
+    },
   },
 });
 
-export const { addTodo, deleteTodo, updateTodo } = updateTodosSlice.actions;
+export const { addTodo, deleteTodo, updateTodo, createTodo } = updateTodosSlice.actions;
 
 export default updateTodosSlice.reducer;
