@@ -1,6 +1,6 @@
 import { ActionType, Action } from '../types/action';
 
-import { StateType, Todo } from '../types/types';
+import { StateType, Todo, Status } from '../types/types';
 import { data } from '../data';
 
 const defaultState: StateType = {
@@ -26,6 +26,14 @@ export const updateTodosReducer = (state = defaultState, action: Action): StateT
       return { ...newState };
     }
 
+    case ActionType.UPDATE_TODO: {
+      const newState = { ...state };
+      (newState?.todos?.find((item: Todo) => item.id === action.payload.id))!.status =
+        action.payload.status;
+
+      return { ...newState };
+    }
+
     default:
       return state;
   }
@@ -37,4 +45,8 @@ export function addTodoAction(payload: Todo): Action {
 
 export function deleteTodoAction(payload: number): Action {
   return { type: ActionType.DELETE_TODO, payload };
+}
+
+export function updateTodoAction(payload: { id: number; status: Status }): Action {
+  return { type: ActionType.UPDATE_TODO, payload };
 }
