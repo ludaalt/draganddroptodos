@@ -1,0 +1,16 @@
+.searchForm {
+  margin: 0 auto 30px auto;
+  display: flex;
+  justify-content: center;
+
+  input {
+    width: 300px;
+    border: none;
+    background: none;
+    border-bottom: 1px solid lightgrey;
+
+    padding: 10px 5px;
+    font: inherit;
+    color: #fff;
+  }
+}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import classes from './SearchBar.module.scss';
+
 interface Props {
   filterData: (value: string) => void;
 }
@@ -17,7 +19,7 @@ const SearchBar: React.FC<Props> = ({ filterData }) => {
   };
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} className={classes.searchForm}>
       <input type='text' value={searchQuery} onChange={handleChange} placeholder='Find task...' />
     </form>
   );
