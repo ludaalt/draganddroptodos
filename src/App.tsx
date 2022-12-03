@@ -1,13 +1,14 @@
-import React from 'react';
-import './App.css';
-
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import MainPage from './pages/MainPage';
 import TodoItemPage from './pages/TodoItemPage';
-import Title from './components/Title';
+import Header from './components/Header';
+import Modal from './components/Modal/Modal';
 
 const App: React.FC = () => {
+  const [isModalMode, setIsModalMode] = useState<boolean>(false);
+
   return (
     <div className='flex'>
       <Router>
@@ -17,8 +18,12 @@ const App: React.FC = () => {
             path='/todos'
             element={
               <>
-                <Title page='main' />
+                <Header page='main' modalStateChanger={(state) => setIsModalMode(state)} />
                 <MainPage />
+                <Modal
+                  isModalModeProp={isModalMode}
+                  modalChanger={(state) => setIsModalMode(state)}
+                />
               </>
             }
           />
@@ -26,7 +31,7 @@ const App: React.FC = () => {
             path='/todos/:id'
             element={
               <>
-                <Title page='todo' />
+                <Header page='todo' modalStateChanger={setIsModalMode} />
                 <TodoItemPage />
               </>
             }
