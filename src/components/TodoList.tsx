@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { Todo, Status } from '../types/types';
 import { RootState } from '../store/store';
@@ -11,11 +12,19 @@ interface Props {
   status: Status;
   isDragging: boolean;
   handleDragging: (dragging: boolean) => void;
+  filteredTodos?: Todo[] | undefined;
+  isFiltering: boolean;
 }
 
-const TodoList: React.FC<Props> = ({ status, isDragging, handleDragging }) => {
+const TodoList: React.FC<Props> = ({
+  status,
+  isDragging,
+  handleDragging,
+  filteredTodos,
+  isFiltering,
+}) => {
   const dispatch = useDispatch();
-  const todos = useSelector((state: RootState) => state.todos.todos);
+  const todos = isFiltering ? filteredTodos : useSelector((state: RootState) => state.todos.todos);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
@@ -38,7 +47,9 @@ const TodoList: React.FC<Props> = ({ status, isDragging, handleDragging }) => {
       {todos?.map(
         (todo: Todo) =>
           status === todo.status && (
-            <TodoItem key={todo.id} todo={todo} handleDragging={handleDragging} />
+            <Link key={todo.id} to={`/todos/${todo.id}`}>
+              <TodoItem todo={todo} handleDragging={handleDragging} />
+            </Link>
           ),
       )}
     </div>
