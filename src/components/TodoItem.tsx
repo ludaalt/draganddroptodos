@@ -1,7 +1,8 @@
 import React from 'react';
-// import { data } from '../data';
+import { useDispatch } from 'react-redux';
 
 import { TodoItemProps } from '../types/types';
+import { deleteTodoAction } from '../store/updateTodosReducer';
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, handleDragging }) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
@@ -10,11 +11,28 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, handleDragging }) => {
     handleDragging(true);
   };
 
-  const handleDragEnd = (): void => handleDragging(false);
+  const handleDragEnd = (): void => {
+    handleDragging(false);
+  };
+
+  const dispatch = useDispatch();
 
   return (
-    <div className='card-container' draggable onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-      <p>{todo.description}</p>
+    <div
+      className='card-container'
+      draggable
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
+      <p>{todo.title}</p>
+      <button
+        title='Delete task'
+        onClick={() => {
+          dispatch(deleteTodoAction(todo.id));
+        }}
+      >
+        &times;
+      </button>
     </div>
   );
 };
