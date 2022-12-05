@@ -8,11 +8,11 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, handleDragging }) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>): void => {
     const id: string & { _kind?: '' } = todo.id.toString();
     e.dataTransfer.setData('text', id);
-    handleDragging(true);
+    handleDragging?.(true);
   };
 
   const handleDragEnd = (): void => {
-    handleDragging(false);
+    handleDragging?.(false);
   };
 
   const dispatch = useDispatch();
@@ -27,7 +27,8 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, handleDragging }) => {
       <p>{todo.title}</p>
       <button
         title='Delete task'
-        onClick={() => {
+        onClick={(e) => {
+          e.preventDefault();
           dispatch(deleteTodoAction(todo.id));
         }}
       >
