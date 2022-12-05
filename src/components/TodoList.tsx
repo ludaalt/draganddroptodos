@@ -6,7 +6,7 @@ import { Todo, Status } from '../types/types';
 import { RootState } from '../store/store';
 import TodoItem from './TodoItem';
 
-import { updateTodoAction } from '../store/updateTodosReducer';
+import { updateTodoStatusAction } from '../store/updateTodosReducer';
 
 interface Props {
   status: Status;
@@ -33,7 +33,7 @@ const TodoList: React.FC<Props> = ({
   const handleDrop = (e: React.DragEvent<HTMLDivElement>): void => {
     e.preventDefault();
     const id = +e.dataTransfer.getData('text');
-    dispatch(updateTodoAction({ id, status }));
+    dispatch(updateTodoStatusAction({ id, status }));
     handleDragging(false);
   };
 
