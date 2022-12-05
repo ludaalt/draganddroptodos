@@ -1,4 +1,4 @@
-export const getCurrentDate = () => {
+export const getCurrentDate = (): string => {
   const newDate = new Date();
   return [
     newDate.getDate().toString().padStart(2, '0'),
