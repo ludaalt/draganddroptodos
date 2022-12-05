@@ -28,11 +28,15 @@ const App: React.FC = () => {
             }
           />
           <Route
-            path='/todos/:id'
+            path={'/todos/:id'}
             element={
               <>
                 <Header page='todo' modalStateChanger={setIsModalMode} />
                 <TodoItemPage />
+                <Modal
+                  isModalModeProp={isModalMode}
+                  modalChanger={(state) => setIsModalMode(state)}
+                />
               </>
             }
           />
