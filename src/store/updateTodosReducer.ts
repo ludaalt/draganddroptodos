@@ -2,6 +2,7 @@ import { ActionType, Action } from '../types/action';
 
 import { StateType, Todo, Status } from '../types/types';
 import { data } from '../data';
+import { getCurrentDate } from '../services/getCurrentDate';
 
 const defaultState: StateType = {
   todos: data as Todo[] | undefined,
@@ -13,7 +14,11 @@ export const updateTodosReducer = (state = defaultState, action: Action): StateT
       const newState = { ...state };
 
       if (action.payload) {
-        newState?.todos?.push(action.payload);
+        const newItem = action.payload;
+        newItem.status = 'Queue';
+        newItem.createdAt = getCurrentDate();
+        newItem.workingHours = 0;
+        newState?.todos?.push(newItem);
       }
 
       return { ...newState };
@@ -26,10 +31,25 @@ export const updateTodosReducer = (state = defaultState, action: Action): StateT
       return { ...newState };
     }
 
-    case ActionType.UPDATE_TODO: {
+    case ActionType.UPDATE_TODO_STATUS: {
       const newState = { ...state };
       (newState?.todos?.find((item: Todo) => item.id === action.payload.id))!.status =
         action.payload.status;
+
+      return { ...newState };
+    }
+
+    case ActionType.UPDATE_TODO_ITEM: {
+      const newState = { ...state };
+
+      if (action.payload && newState.todos) {
+        const itemToReplace = newState.todos.find((item: Todo) => item.id === action.payload.id);
+        const index = itemToReplace && newState.todos.indexOf(itemToReplace);
+
+        if (index && index !== -1) {
+          newState.todos[index] = action.payload;
+        }
+      }
 
       return { ...newState };
     }
@@ -47,6 +67,10 @@ export function deleteTodoAction(payload: number): Action {
   return { type: ActionType.DELETE_TODO, payload };
 }
 
-export function updateTodoAction(payload: { id: number; status: Status }): Action {
-  return { type: ActionType.UPDATE_TODO, payload };
+export function updateTodoStatusAction(payload: { id: number; status: Status }): Action {
+  return { type: ActionType.UPDATE_TODO_STATUS, payload };
+}
+
+export function updateTodoItemAction(payload: Todo): Action {
+  return { type: ActionType.UPDATE_TODO_ITEM, payload };
 }
